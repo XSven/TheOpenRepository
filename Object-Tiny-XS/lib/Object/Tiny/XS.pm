@@ -2,7 +2,7 @@ package Object::Tiny::XS;
 use strict 'vars', 'subs';
 
 BEGIN {
-	require 5.004;
+	require 5.006;
 	$Object::Tiny::XS::VERSION = '1.01';
 }
 
