@@ -43,7 +43,8 @@ SCOPE: {
 }
 
 # Trigger the constructor exception
-SCOPE: {
+SKIP: {
+  skip 'Object::Tiny::XS inherently is less strict about the names of accessors', 1;
 	eval "package Bar; use Object::Tiny::XS 'bad thing';";
 	ok( $@ =~ /Invalid accessor name/, 'Got expected error' );
 }

@@ -1,31 +1,18 @@
 package Object::Tiny::XS;
-use strict 'vars', 'subs';
 
-BEGIN {
-	require 5.006;
-	$Object::Tiny::XS::VERSION = '1.01';
-}
+use 5.006;
+use strict;
 
+our $VERSION = '1.01';
+
+use Class::XSAccessor constructor => 'new';
 sub import {
-	return unless shift eq 'Object::Tiny::XS';
+	return unless shift eq __PACKAGE__;
 	my $pkg   = caller;
-	my $child = !! @{"${pkg}::ISA"};
-	eval join "\n",
-		"package $pkg;",
-		($child ? () : "\@${pkg}::ISA = 'Object::Tiny::XS';"),
-                "use Class::XSAccessor getters => {",
-		(map {
-			defined and ! ref and /^[^\W\d]\w*\z/s
-			or die "Invalid accessor name '$_'";
-			"'$_' => '$_',"
-		} @_),
-                "};";
-	die "Failed to generate $pkg" if $@;
-	return 1;
+	Class::XSAccessor->import( class => $pkg, getters => [ @_ ] );
+	no strict 'refs';
+	*{ "${pkg}::ISA" } = [ __PACKAGE__ ] unless @{ "${pkg}::ISA" };
 }
-
-use Class::XSAccessor
-  constructor => 'new';
 
 1;
 
