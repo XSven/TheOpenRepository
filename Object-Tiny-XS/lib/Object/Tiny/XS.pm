@@ -5,7 +5,6 @@ use strict;
 
 our $VERSION = '1.01';
 
-use Class::XSAccessor constructor => 'new';
 sub import {
 	return unless shift eq __PACKAGE__;
 	my $pkg   = caller;
@@ -13,6 +12,8 @@ sub import {
 	no strict 'refs';
 	*{ "${pkg}::ISA" } = [ __PACKAGE__ ] unless @{ "${pkg}::ISA" };
 }
+
+use Class::XSAccessor constructor => 'new';
 
 1;
 
